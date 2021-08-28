@@ -71,7 +71,7 @@ class Main extends PluginBase implements Listener{
             if(substr($url, 0, strlen($query)) == $query) {
                 $this->enabled = true;
                 if($this->cfg->get('other_pluginEnabled?') === true){
-                    $this->sendMessage("Enable", $this->cfg->get('other_pluginEnabledFormat'));
+                    $this->sendMessage($this->cfg->get('other_pluginEnabledFormat'), "Enable");
                 }
                 return;
             } else {
@@ -88,7 +88,7 @@ class Main extends PluginBase implements Listener{
             $this->getLogger()->info($this->responses->get("disabled"));
         }
         if($this->cfg->get('other_pluginDisabled?') === true){
-            $this->sendMessage("Disabled", $this->cfg->get('other_pluginDisabledFormat'));
+            $this->sendMessage($this->cfg->get('other_pluginDisabledFormat'), "Disabled");
         }
     }
 
@@ -160,7 +160,7 @@ class Main extends PluginBase implements Listener{
                         $sender->sendMessage(C::RED.$this->responses->get("command_disabled"));
                     break;
                     } else {
-                    $this->sendMessage($name, "[".$sender->getNameTag()."] : ".str_replace($args[0]." ", "",implode(" ", $args)));
+                    $this->sendMessage("[".$sender->getNameTag()."] : ".str_replace($args[0]." ", "",implode(" ", $args)), $name);
                     $sender->sendMessage(C::AQUA.$this->responses->get("send_success"));
                     }
                 }
@@ -232,7 +232,7 @@ class Main extends PluginBase implements Listener{
             $msg = str_replace("{fac_rank}", $rank, $msg);
             $msg = str_replace("{faction}", $fac, $msg);
         }
-        $this->sendMessage($playername, $msg);
+        $this->sendMessage($msg, $playername);
     }
 
     public function onQuit(PlayerQuitEvent $event){
@@ -259,7 +259,7 @@ class Main extends PluginBase implements Listener{
             $msg = str_replace("{fac_rank}", $rank, $msg);
             $msg = str_replace("{faction}", $fac, $msg);
         }
-        $this->sendMessage($playername, $msg);
+        $this->sendMessage($msg, $playername);
     }
 
     public function onDeath(PlayerDeathEvent $event){
@@ -286,7 +286,7 @@ class Main extends PluginBase implements Listener{
             $msg = str_replace("{fac_rank}", $rank, $msg);
             $msg = str_replace("{faction}", $fac, $msg);
         }
-        $this->sendMessage($playername, $msg);
+        $this->sendMessage($msg, $playername);
     }
 
     public function onChat(PlayerChatEvent $event){
@@ -316,7 +316,7 @@ class Main extends PluginBase implements Listener{
             $msg = str_replace("{fac_rank}", $rank, $msg);
             $msg = str_replace("{faction}", $fac, $msg);
         }
-        $this->sendMessage($playername, $msg);
+        $this->sendMessage($msg, $playername);
     }
 
     public function backFromAsync($player, $result){
@@ -349,7 +349,7 @@ class Main extends PluginBase implements Listener{
      */
     // Heavy thanks to NiekertDev !
 
-    public function sendMessage(string $player = "nolog", string $msg){
+    public function sendMessage(string $msg, string $player = "nolog"){
         if(!$this->enabled){
             return;
         }
